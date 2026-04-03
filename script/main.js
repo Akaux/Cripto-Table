@@ -17,7 +17,7 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=mark
 
     function criaP (valor,index){
 
-      const row = document.createElement('tr');
+    const row = document.createElement('tr');
     const tittle = document.createElement('td');
     const price = document.createElement('td');
     const coinHour = document.createElement('td');
