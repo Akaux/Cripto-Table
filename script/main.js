@@ -1,12 +1,13 @@
 
 const options = {method: 'GET', headers: {'x-cg-demo-api-key': 'CG-F5ByHq8gvxTwafLCb1DoxPGo'}};
 
-fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&names=Bitcoin&symbols=btc&category=layer-1&price_change_percentage=1h', options)
+fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h', options)
   .then(res => res.json())
   .then(data => { 
     const limite = Math.min(data.length,10);
-   for (let i = 0; i < limite; i++){
-      criaP(data, i)
+   for(let i = 0; i <10; i++){
+       criaP(data, i);
+   
     }
     
     return data;
@@ -15,16 +16,16 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoi
     
 
     function criaP (valor,index){
+
+      const row = document.createElement('tr');
     const tittle = document.createElement('td');
     const price = document.createElement('td');
     const coinHour = document.createElement('td');
     const marketcap = document.createElement('td');
-    
-    coinHour.id = "PriceCheck"
-    price.id = 'PriceNow'
-    marketcap.id = 'MarketConvert'
-
+      
     const coin_desc = valor[index]
+
+
       let coin_value = coin_desc.current_price;
       coin_value = coin_value * 5;
 
@@ -36,24 +37,24 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoi
       console.log(coin24h)
       console.log(coin_marketCap)
       console.log(coin_value)
+
+
       tittle.textContent = coin_desc.id;
-      price.textContent = coin_value;
-      coinHour.textContent = coin24h;
+      price.textContent = coin_value.toLocaleString('pt-br',{
+        style: 'currency',
+        currency: 'BRL'
+      });
+      coinHour.textContent = coin24h.toFixed(2) + '%';
       marketcap.textContent = convertMarket(coin_marketCap);
 
-      sectionCoin.appendChild(tittle)
-      sectionCoin.appendChild(price)
-      sectionCoin.appendChild(coinHour)
-      sectionCoin.appendChild(marketcap)
+      row.appendChild(tittle)
+      row.appendChild(price)
+      row.appendChild(coinHour)
+      row.appendChild(marketcap)
 
+      sectionCoin.appendChild(row);
       
-      PriceNow.innerHTML = coin_value.toLocaleString('pt-BR', { 
-      style: 'currency', 
-      currency: 'BRL' 
-  });
-
-      
-      tendenciaVerificada(coin24h);
+      tendenciaVerificada(coin24h, coinHour);
       
     }
 
@@ -65,14 +66,15 @@ fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoi
       }
     }
 
-    function tendenciaVerificada(porcentagem){
+    function tendenciaVerificada(porcentagem, elemento){
       if(porcentagem >0){
-        PriceCheck.style.color = 'Green'
-        PriceCheck.innerHTML = `▲ ${porcentagem.toFixed(2)}%`;
+        elemento.style.color = 'Green'
+        elemento.innerHTML = `▲ ${porcentagem.toFixed(2)}%`;
         return console.log('o preço subiu !');
+
       } else if (porcentagem <0 ){
-        PriceCheck.style.color = 'Red'
-        PriceCheck.innerHTML = `▼ ${porcentagem.toFixed(2)}%`;
+        elemento.style.color = 'Red'
+        elemento.innerHTML = `▼ ${porcentagem.toFixed(2)}%`;
         return console.log('O preço caiu...');
       } else {
         return console.log('O preço está estavel')
