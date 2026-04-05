@@ -3,6 +3,11 @@ body{
     background-color: #0E1118;
 }
 #search-1{
+    border: 2px solid #696e738c;
+    border-radius: 5px;
+    height: 25px;
+    width: 570px;
+    margin-top: 50px;
     color: #fff;
     display: flex;
     background-color:#161b25 ;
@@ -29,6 +34,7 @@ body{
     height: 50px;
 }
 #table-1{
+    margin-top: 50px;
     display: flex;
     justify-self: center;
 }
@@ -51,5 +57,46 @@ table td{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 p{  
+    color: #fff;
+}
+#btn-2{
+    cursor: pointer;
+    color: #fff;
+    background-color: #696e738c;
+    border: none;
+    border-radius: 3px;
+    margin-top: 50px;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+}
+#btn-2:hover{
+    transition: 0.5s;
+    background-color: #696e737a;
+    color: #0E1118;
+}
+#btn-3{
+    cursor: pointer;
+    color: #fff;
+    background-color: #696e738c;
+    border: none;
+    border-radius: 3px;
+    margin-top: 50px;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+}
+#btn-3:hover{
+    transition: 0.5s;
+    background-color: #696e737a;
+    color: #0E1118;
+}
+#p2{
+    margin: 0 35% 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#p3{
+    margin: 10px 38% 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: #fff;
 }

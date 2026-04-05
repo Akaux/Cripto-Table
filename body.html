@@ -7,27 +7,35 @@
     <link rel="stylesheet" href="style/crip.css">
 </head>
 <body>
+    <section>
+        <h1 id="p3">Crypto BRL</h1>
+        <p id="p2">Preços de criptomoedas em tempo real</p>
+    </section>
+
     <section id="sla">
-        <input type="text" id="search-1">
-        <button>Buscar</button>
+        <p id="erroBusc" style="color: red; display: none;">
+            Moeda não encontrada
+        </p>
+        <input type="text" id="search-1" placeholder="Buscar criptomoeda...(ex: bitcoin, ethereum, solana)">
+        <button id="btn-2">Buscar</button>
+        <button id="btn-3">Menor</button>
     </section>  
     <section>
 <table id="table-1">
     <thead>
-        <tr> <th>Coin</th>
+        <tr>
+            <th>Coin</th> 
+            <th>Name</th>
             <th>Price</th>
             <th>24h</th>
             <th>Market Cap</th>
         </tr> </thead>
 
-    <tbody id="coin-2">
-        <tr> </tr>
-         </tbody>
+    <tbody id="coin-2"></tbody>
 </table>
 
         </div>
     </section>
-    <p>slaa</p>
 </body>
 <script src="script/main.js"></script>
 </html>

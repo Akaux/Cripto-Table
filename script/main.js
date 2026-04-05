@@ -1,83 +1,111 @@
+const tabela = document.getElementById("coin-2");
+const input = document.getElementById("search-1");
+const botao = document.getElementById("btn-2");
+const erro = document.getElementById("erroBusc");
 
-const options = {method: 'GET', headers: {'x-cg-demo-api-key': 'CG-F5ByHq8gvxTwafLCb1DoxPGo'}};
+let todasMoedas = [];
 
-fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h', options)
-  .then(res => res.json())
-  .then(data => { 
-    const limite = Math.min(data.length,10);
-   for(let i = 0; i <10; i++){
-       criaP(data, i);
-   
-    }
-    
-    return data;
-  })
-  .catch(err => console.log(err));
-    
+// BUSCAR API
+fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl")
+.then(res => res.json())
+.then(data => {
 
-    function criaP (valor,index){
+    todasMoedas = data;
 
-    const row = document.createElement('tr');
-    const tittle = document.createElement('td');
-    const price = document.createElement('td');
-    const coinHour = document.createElement('td');
-    const marketcap = document.createElement('td');
-      
-    const coin_desc = valor[index]
+    renderTabela(data.slice(0,10));
+
+});
 
 
-      let coin_value = coin_desc.current_price;
-      coin_value = coin_value * 5;
+function renderTabela(moedas){
 
-      let coin_marketCap = coin_desc.market_cap;
+    tabela.innerHTML = "";
 
-      let coin24h = coin_desc.price_change_percentage_24h;
-      
+    moedas.forEach(coin => {
 
-      console.log(coin24h)
-      console.log(coin_marketCap)
-      console.log(coin_value)
+        const tr = document.createElement("tr");
 
 
-      tittle.textContent = coin_desc.id;
-      price.textContent = coin_value.toLocaleString('pt-br',{
-        style: 'currency',
-        currency: 'BRL'
-      });
-      coinHour.textContent = coin24h.toFixed(2) + '%';
-      marketcap.textContent = convertMarket(coin_marketCap);
+        tr.innerHTML = `
+        <td>
+            <img src="${coin.image}" width="20">
+            ${coin.symbol.toUpperCase()}
+        </td>
 
-      row.appendChild(tittle)
-      row.appendChild(price)
-      row.appendChild(coinHour)
-      row.appendChild(marketcap)
+        <td>${coin.name}</td>
 
-      sectionCoin.appendChild(row);
-      
-      tendenciaVerificada(coin24h, coinHour);
-      
-    }
+        <td>$ BRL ${coin.current_price}</td>
 
-    function convertMarket (valor){
-      if(valor >= 1_000_000_000_000){
-        return 'R$' + (valor / 1_000_000_000_000).toFixed(2) + "T";
-      } else if (valor >= 1_000_000_000){
-        return 'R$' + (valor / 1_000_000_000).toFixed(2) + "B";
-      }
+        <td style="color:${coin.price_change_percentage_24h >= 0 ? 'green' : 'red'}">
+            ${coin.price_change_percentage_24h.toFixed(2)}%
+        </td>
+
+        <td>$ ${coin.market_cap.toLocaleString()}</td>
+        `;
+
+        tabela.appendChild(tr);
+
+    });
+
+}
+
+
+function buscarMoeda(){
+
+    const valor = input.value.toLowerCase().trim();
+
+
+    if(valor === ""){
+        erro.style.display = "none";
+        renderTabela(todasMoedas.slice(0,10));
+        return;
     }
 
-    function tendenciaVerificada(porcentagem, elemento){
-      if(porcentagem >0){
-        elemento.style.color = 'Green'
-        elemento.innerHTML = `▲ ${porcentagem.toFixed(2)}%`;
-        return console.log('o preço subiu !');
+    const resultado = todasMoedas.filter(coin =>
+        coin.name.toLowerCase().includes(valor) ||
+        coin.symbol.toLowerCase().includes(valor)
+    );
 
-      } else if (porcentagem <0 ){
-        elemento.style.color = 'Red'
-        elemento.innerHTML = `▼ ${porcentagem.toFixed(2)}%`;
-        return console.log('O preço caiu...');
-      } else {
-        return console.log('O preço está estavel')
-      }
+    if(resultado.length === 0){
+
+        tabela.innerHTML = "";
+        erro.style.display = "block";
+
+    }else{
+
+        erro.style.display = "none";
+        renderTabela(resultado);
+
     }
-    const sectionCoin = document.querySelector('#coin-2')
+
+}
+
+
+botao.addEventListener("click", buscarMoeda);
+
+
+input.addEventListener("keypress", function(e){
+
+    if(e.key === "Enter"){
+        buscarMoeda();
+    }
+
+});
+
+const btn2 = document.getElementById('btn-3')
+
+btn2.addEventListener('click', function(){
+  menorValor(todasMoedas);
+});
+
+function menorValor(moedas){
+  let menor = moedas[0];
+
+  moedas.forEach(coin =>{
+    if(coin.current_price < menor.current_price){
+      menor = coin;
+    }
+  });
+  
+  console.log('Menor valor:' , menor.name, menor.current_price);
+}
